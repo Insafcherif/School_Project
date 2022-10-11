@@ -1,34 +1,14 @@
 const mongoose = require("mongoose");
+const { AbstractUserSchema } = require("./User");
 
-const parentSchema = mongoose.Schema({
-  firstName: {
-    type: String,
-    required: true,
-  },
-  lastName: {
-    type: String,
-    required: true,
-  },
-  age: {
-    type: Number,
-    required: true,
-  },
-  email: {
-    type: String,
-    required: true,
-    unique: true,
-  },
-  password: {
-    type: String,
-    required: true,
-  },
-  gender: {
-    type: String,
-    enum: ["male", "female"],
-  },
+const parentSchema = new AbstractUserSchema({
   Job: {
     type: String,
   },
+  Student: {
+    type: String,
+    required: true,
+  },
 });
 
-module.exports = mongoose.model("teacher", teacherSchema);
+module.exports = mongoose.model("¨Parent", parentSchema);

@@ -35,7 +35,10 @@ const addUser = async (req, res) => {
       email: userInfo.email,
       password: userInfo.password,
       gender: userInfo.gender,
-      role: userInfo.role,
+      Phone: userInfo.phone,
+      image: req.file.filename,
+      address : userInfo.address,
+      
     });
     const users = await User.find();
     const searchedUser = users.find((elt) => elt.email == userInfo.email);

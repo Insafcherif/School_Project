@@ -1,41 +1,30 @@
 const mongoose = require("mongoose");
-const userSchema = mongoose.Schema({
-  firstName: {
-    type: String,
-    required: true,
-  },
-  lastName: {
-    type: String,
-    required: true,
-  },
-  age: {
-    type: Number,
-    required: true,
-  },
-  email: {
-    type: String,
-    required: true,
-    unique: true,
-  },
-  password: {
-    type: String,
-    required: true,
-  },
-  gender: {
-    type: String,
-    enum: ["male", "female"],
-  },
-  role: {
-    type: String,
-    enum: ["Parent", "Teacher", "Administrator"],
-    default: "Teacher",
-  },
-  references: { type: [mongoose.Schema.Types.ObjectId], refPath: "model_type" },
-  model_type: {
-    type: String,
-    enum: ["Parent", "Teacher", "Administrator"],
-    required: true,
-  },
-});
+const Schema = mongoose.Schema;
+const util = require("util");
 
-module.exports = mongoose.model("user", userSchema);
+//User Schema
+function AbstractUserSchema() {
+  //call super
+  Schema.apply(this, arguments);
+  //add
+  this.add(
+    {
+      firstName: { type: String, required: true },
+      lastName: { type: String, required: true },
+      age: { type: Number, required: true },
+      email: { type: String, required: true, unique: true },
+      password: { type: String, required: true },
+      gender: { type: String, enum: ["male", "female"] },
+      role: { type: String, required: false },
+      Phone: { type: Number, require: true, default:"https://www.kindpng.com/picc/m/78-785917_user-login-function-name-avatar-user-icon-hd.png" },
+      image: { type: String },
+      address:{ type:String},
+    },
+    { timestamps: true }
+  );
+}
+util.inherits(AbstractUserSchema, Schema);
+const userSchema = new AbstractUserSchema();
+const exportSchema = mongoose.model("user", userSchema);
+
+module.exports = { exportSchema, AbstractUserSchema };

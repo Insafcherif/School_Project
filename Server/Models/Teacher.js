@@ -1,30 +1,9 @@
 const mongoose = require("mongoose");
-const teacherSchema = mongoose.Schema({
-  firstName: {
-    type: String,
-    required: true,
-  },
-  lastName: {
-    type: String,
-    required: true,
-  },
-  age: {
-    type: Number,
-    required: true,
-  },
-  email: {
-    type: String,
-    required: true,
-    unique: true,
-  },
-  password: {
-    type: String,
-    required: true,
-  },
-  gender: {
-    type: String,
-    enum: ["male", "female"],
-  },
+const { AbstractUserSchema } = require("./User");
+
+const teacherSchema = new AbstractUserSchema({
+  bio: { type: String },
+  date_of_birth: { type: String },
   contactType: {
     type: String,
     enum: ["permanent", "contractual"],
@@ -36,6 +15,10 @@ const teacherSchema = mongoose.Schema({
     unique: true,
   },
   subject: {
+    type: String,
+    required: true,
+  },
+  empolyee_id: {
     type: String,
     required: true,
   },
