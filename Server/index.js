@@ -1,12 +1,15 @@
-const connectdb = require("./config/connectDB");
 const express = require("express");
+require("dotenv").config();
 const app = express();
 const port = process.env.PORT;
-const teacherRouter=require('./Routers/teacherRouter')
-const userRouter=require('./Routers/UserRouter')
-const parentRouter = require('./Routers/parentRouter')
+const connectdb = require("./config/connectdb");
+const profRouter = require("./Routers/ProfRouters");
+const userRouter = require("./Routers/UserRouters");
+const partRouter = require("./Routers/ParRouter");
+const authRouter = require("./Routers/authRouters");
+const cors = require("cors");
 
-
+app.use(cors());
 app.use(express.json());
 app.listen(port, (e) => {
   e
@@ -15,6 +18,8 @@ app.listen(port, (e) => {
 });
 
 connectdb();
-app.use('/api', teacherRouter )
-app.use('/api', userRouter )
-app.use('/api', parentRouter )
+
+app.use("/api", userRouter);
+app.use("/api/prof", profRouter);
+app.use("/api/part", partRouter);
+app.use("/api", authRouter);
