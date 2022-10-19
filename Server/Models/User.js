@@ -16,8 +16,8 @@ function AbstractUserSchema() {
       password: { type: String, required: true },
       gender: { type: String, enum: ["male", "female"] },
       role: { type: String, required: false },
-      Phone: { type: Number, require: true, default:"https://www.kindpng.com/picc/m/78-785917_user-login-function-name-avatar-user-icon-hd.png" },
-      image: { type: String },
+      Image: { type: String, require: true, default:"https://www.kindpng.com/picc/m/78-785917_user-login-function-name-avatar-user-icon-hd.png" },
+      Phone: { type: String },
       address:{ type:String},
     },
     { timestamps: true }

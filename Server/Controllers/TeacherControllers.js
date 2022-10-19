@@ -38,7 +38,7 @@ const addTeacher = async (req, res) => {
       gender: teacherInfo.gender,
       role: teacherInfo.role,
       Phone: teacherInfo.phone,
-      image: req.file.filename,
+      Image: req.file.filename,
       address: teacherInfo.address,
       bio: teacherInfo.bio,
       date_of_birth: teacherInfo.date_of_birth,
