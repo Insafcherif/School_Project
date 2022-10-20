@@ -6,8 +6,7 @@ const levelSchema = mongoose.Schema({
   levelNumber: { type: Number, enum: [1, 2, 3, 4, 5, 6] },
   levelPrice: { type: Number },
   levelSubject: [],
-  levelClass: [],
-});
+ });
 
 const LevelModel = mongoose.model("level", levelSchema);
 
@@ -34,13 +33,7 @@ const subjectSchema = mongoose.Schema({
       "Music",
     ],
   },
-  NumberOfHours: { type: Number },
-  NoteMainExam: [],
-  NoteContExam: [],
-  NoteTest: [],
-  NoteOral: [],
-  Evaluation: [],
-});
+ });
 
 const SubjectModel = mongoose.model("subject", subjectSchema);
 

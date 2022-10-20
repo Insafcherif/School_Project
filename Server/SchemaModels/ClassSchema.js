@@ -7,13 +7,12 @@ const classSchema = mongoose.Schema({
     required: true,
   },
   Level: {
-    type: String,
+    type: mongoobje.id,
     required: true,
   },
-  ListOfStudents: [],
-  ListOfSubjects: [],
-  ListOfProfs: [],
-  Session: [],
-  HomeWork: { type: String },
+  Year: {
+    type: Number,
+  },
+ 
 });
 module.exports = mongoose.model("class", classSchema);

@@ -6,10 +6,6 @@ const parentSchema = new AbstractBaseSchema(
   Job: {
     type: String,
   },
-  Student: {
-    type: String,
-    required: true,
-  },
 }
 );
 

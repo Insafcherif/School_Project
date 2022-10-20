@@ -13,10 +13,6 @@ const profSchema = new AbstractBaseSchema({
     type: String,
     required: false,
   },
-  subject: {
-    type: String,
-    required: false,
-  },
   empolyee_id: {
     type: Number,
     required: false,

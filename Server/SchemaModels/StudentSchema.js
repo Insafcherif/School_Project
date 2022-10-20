@@ -9,29 +9,15 @@ const studSchema = mongoose.Schema({
     type: String,
     required: true,
   },
-  age: {
-    type: Number,
-    required: true,
-  },
   date_of_birth: {
     type: String,
   },
   gender: {
     type: String,
-  },
-  className: {
-    type: Number,
-    required: true,
+    enum: ["male", "female"],
   },
   addmision_year: {
     type: Number,
-  },
-  parent: {
-    type: String,
-  },
-  registration_fees: {
-    type: Number,
-    required: true,
   },
   Comment: {
     type: String,
