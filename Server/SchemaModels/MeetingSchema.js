@@ -5,9 +5,13 @@ const meetingSchema = mongoose.Schema({
     type: String,
     required: true,
   },
-  parent_id: {
-    type: String,
-  },
+  parent_ids: [
+    {
+      parent_id: {
+        type: String,
+      },
+    },
+  ],
   date: {
     type: Date,
     required: true,

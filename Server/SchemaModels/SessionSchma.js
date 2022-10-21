@@ -5,6 +5,12 @@ const SessionSchema = mongoose.Schema({
   DaySess: {
     type: Date,
   },
-  HomeWork: { type: String },
-  attendence: [],
+  HomeWork_id: { type: String },
+  attendences_id: [
+    {
+      attendence_id: {
+        type: String,
+      },
+    },
+  ],
 });

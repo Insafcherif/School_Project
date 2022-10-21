@@ -1,7 +1,7 @@
 const mongoose = require("mongoose");
 
 const attendancesSchema = mongoose.Schema({
-  studentID: {
+  student_id: {
     type: String,
     required: true,
   },
