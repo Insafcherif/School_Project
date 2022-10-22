@@ -7,6 +7,7 @@ const profRouter = require("./Routers/ProfRouters");
 const userRouter = require("./Routers/UserRouters");
 const partRouter = require("./Routers/ParRouter");
 const authRouter = require("./Routers/authRouters");
+const logInTouter = require ("./Routers/LoginRouter")
 const cors = require("cors");
 
 app.use(cors());
@@ -23,3 +24,6 @@ app.use("/api", userRouter);
 app.use("/api/prof", profRouter);
 app.use("/api/part", partRouter);
 app.use("/api", authRouter);
+app.use("/login", logInTouter);
+
+

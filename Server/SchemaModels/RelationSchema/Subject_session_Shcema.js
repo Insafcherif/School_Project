@@ -1,7 +1,7 @@
 const mongoose = require("mongoose");
 
-const schema = mongoose.Schema({
-  teacher_id: {
+const schema = new mongoose.Schema({
+  session_id: {
     type: String,
     required: true,
   },
@@ -13,12 +13,6 @@ const schema = mongoose.Schema({
     type: String,
     required: true,
   },
-  start_date: {
-    type: Date,
-  },
-  end_date: {
-    type: Date,
-  },
 });
 
-module.exports = mongoose.model("Prof_Subject", schema);
+module.exports = mongoose.model("Session_Subject", schema);

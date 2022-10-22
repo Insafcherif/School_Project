@@ -9,6 +9,9 @@ const schema = new mongoose.Schema({
         type: String,
         required: true
     },
+    relation: {
+        type: String
+    },
     is_parent: {
         type: Boolean
     },

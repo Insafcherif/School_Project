@@ -8,6 +8,7 @@ function AbstractBaseSchema() {
   Schema.apply(this, arguments);
   //add
   this.add({
+    userName:{type: String, required: true },
     firstName: { type: String, required: true },
     lastName: { type: String, required: true },
     age: { type: Number, required: true },
@@ -27,6 +28,9 @@ function AbstractBaseSchema() {
     },
     Phone: { type: Number },
     address: { type: String },
+    access_level_id: {
+      type: String,
+    },
   });
 }
 util.inherits(AbstractBaseSchema, Schema);

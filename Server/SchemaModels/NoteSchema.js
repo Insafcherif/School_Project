@@ -18,7 +18,6 @@ const noteSchema = mongoose.Schema({
   NoteCoef: { type: Number },
   NoteDate: { type: Date },
   Period: { type: Number, enum: [1, 2, 3] },
-
   created_date: {
     type: Date,
   },
