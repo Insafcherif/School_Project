@@ -1,16 +1,11 @@
 const express = require("express");
 const router = express.Router();
 const {
-  updateData,
-  deleteData,
-  addNew,
-  getOnebytId,
-  getAll,
-  findData,
-} = require("../../Controllers/datadaseControllers/evalControllers");
+    updateData, deleteData, addNew, getOnebytId, getAll, findData
+} = require ("../../Controllers/RelationControllers/Subject_SessionControllers")
 
 router.get("/all", getAll);
-router.get("/:id", getOnebytId);
+router.get("/:id",getOnebytId);
 router.post("/add", addNew);
 router.put("/:id", updateData);
 router.delete("/:id", deleteData);
