@@ -17,7 +17,7 @@ function AbstractBaseSchema() {
     gender: { type: String, enum: ["male", "female"] },
     role: {
       type: String,
-      enum: ["Parent", "Professor", "Administrator"],
+      enum: ["Parent", "Professor", "Administrator", "Student"],
       required: false,
     },
     Pict: {

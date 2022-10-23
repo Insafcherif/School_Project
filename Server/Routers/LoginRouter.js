@@ -5,3 +5,4 @@ const { extractToken } = require("../Midelwars/extracToken");
 
 router.post("/", logIn);
 router.post("/verifyToken", extractToken, verifyToken);
+module.exports = router;

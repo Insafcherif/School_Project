@@ -1,17 +1,23 @@
 const express = require("express");
 const router = express.Router();
 const {
-    getAllProfs,
-  getOneProf,
+  getAllProfs,
+  getOneProfById,
   addProf,
   deteleProf,
   updateProf,
+  findProf,
+  schedulMeeting,
 } = require("../Controllers/ProfControllers");
+const  {extractToken} = require("../Midelwars/extracToken");
 
-router.get("/allprofs", getAllProfs);
-router.get("/:id", getOneProf);
-router.post("/addprof", addProf);
-router.delete("/:id", deteleProf);
-router.put("/:id", updateProf);
+
+router.get("/allprofs", extractToken, getAllProfs);
+router.get("/:id",extractToken, getOneProfById);
+router.post("/addprof", extractToken, addProf);
+router.delete("/:id",extractToken, deteleProf);
+router.put("/:id", extractToken,updateProf);
+router.post("/find", findProf);
+router.post("/scheduleMeeting",extractToken, schedulMeeting);
 
 module.exports = router;

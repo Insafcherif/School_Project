@@ -1,7 +1,7 @@
 const mongoose = require("mongoose");
 
 const meetingSchema = mongoose.Schema({
-  teacher_id: {
+  professor_id: {
     type: String,
     required: true,
   },

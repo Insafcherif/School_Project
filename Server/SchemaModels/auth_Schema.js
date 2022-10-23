@@ -19,4 +19,4 @@ const schema = mongoose.Schema({
   },
 });
 
-module.exports = (module.exports = mongoose.model("auth", schema));
+module.exports =  mongoose.model("auth", schema);
