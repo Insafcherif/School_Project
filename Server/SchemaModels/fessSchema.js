@@ -1,6 +1,6 @@
 const mongoose = require("mongoose");
 
-const schema = new mongoose.Schema({
+const schema = mongoose.Schema({
   student_id: {
     type: String,
     required: true,
@@ -16,4 +16,4 @@ const schema = new mongoose.Schema({
   },
 });
 
-module.exports = mongoose.model("Student_fee", schema);
+module.exports = mongoose.model("fee", schema);

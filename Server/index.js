@@ -9,8 +9,8 @@ const partRouter = require("./Routers/ParRouter");
 const authRouter = require("./Routers/authRouters");
 const logInRouter = require("./Routers/LoginRouter");
 const StudentRouter = require("./Routers/StudentRouter");
-const SubjectRouter = require("./Routers/SubjectRouter");
-const SessionRouter = require("./Routers/SessionRouter");
+const dataBaseRouter = require("./Routers/databaseRouters/dataBasesRouters");
+const classMRouter = require ("./Routers/ClassManagementRouter")
 const cors = require("cors");
 
 app.use(cors());
@@ -24,10 +24,10 @@ app.listen(port, (e) => {
 connectdb();
 
 app.use("/api", userRouter);
-app.use("/api/prof", profRouter);
-app.use("/api/part", partRouter);
+app.use("/api/professor", profRouter);
+app.use("/api/parent", partRouter);
 app.use("/api", authRouter);
 app.use("/api/login", logInRouter);
 app.use("/api/student", StudentRouter);
-app.use("/api/subject", SubjectRouter);
-app.use("/api/session", SessionRouter);
+app.use("/api/database", dataBaseRouter);
+app.use("/api/classM", classMRouter);

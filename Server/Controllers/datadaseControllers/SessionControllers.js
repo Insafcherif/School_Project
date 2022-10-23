@@ -1,4 +1,4 @@
-const DataSchema = require("../SchemaModels/SessionSchma");
+const DataSchema = require("../../SchemaModels/SessionSchma");
 
 //Get all
 

@@ -2,7 +2,7 @@ const express = require("express");
 const router = express.Router();
 const {
     updateData, deleteData, addNew, getOnebytId, getAll, findData
-} = require ("../Controllers/SessionControllers")
+} = require ("../../Controllers/datadaseControllers/AccessLevelControllers")
 
 router.get("/all", getAll);
 router.get("/:id",getOnebytId);

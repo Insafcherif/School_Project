@@ -7,7 +7,7 @@ const classSchema = mongoose.Schema({
     required: true,
   },
   Level: {
-    type: mongoobje.id,
+    type: String,
     required: true,
   },
   Year: {

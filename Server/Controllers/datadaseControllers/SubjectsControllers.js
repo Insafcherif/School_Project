@@ -1,4 +1,4 @@
-const DataSchema = require("../SchemaModels/Subject_Schema");
+const DataSchema = require("../../SchemaModels/Subject_Schema");
 
 //Get all
 
