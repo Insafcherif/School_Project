@@ -1,15 +1,8 @@
 const mongoose = require("mongoose");
 
-const noteSchema = mongoose.Schema({
-  student_id: {
-    type: String,
-  },
-  class_id: {
-    type: String,
-  },
-  subject_id: {
-    type: String,
-  },
+const schema = mongoose.Schema({
+  student_id: { type: mongoose.Types.ObjectId, ref: "student" },
+  subject_id: { type: mongoose.Types.ObjectId, ref: "subject" },
   NoteType: {
     type: String,
     enum: ["Main Exam", "Control Exam", "Test", "Orale"],
@@ -23,4 +16,4 @@ const noteSchema = mongoose.Schema({
   },
 });
 
-module.exports = mongoose.model("note", noteSchema);
+module.exports = mongoose.model("note", schema);

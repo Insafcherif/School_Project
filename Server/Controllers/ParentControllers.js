@@ -4,15 +4,18 @@ const bcrypt = require("bcryptjs");
 const tokenSchema = require("../SchemaModels/token_Schema");
 const authSchema = require("../SchemaModels/auth_Schema");
 const meetingSchema = require("../SchemaModels/MeetingSchema");
+const DataSchema = require("../SchemaModels/RelationSchema/Parent_Student_Schema");
+const { ObjectId } = require("mongodb");
+const Student = require("../SchemaModels/StudentSchema");
 
 //Get all Parents
 
 const getAllParents = async (req, res) => {
   try {
-    const resultList = await tokenSchema.find({ token: req.token });
-    if (resultList.length < 1) {
-      res.status(401).json({ error: [{ message: "Invalid Token" }] });
-    }
+    // const resultList = await tokenSchema.find({ token: req.token });
+    // if (resultList.length < 1) {
+    //   res.status(401).json({ error: [{ message: "Invalid Token" }] });
+    // }
     const parents = await Parent.find();
     if (parents.length === 0) {
       res.status(201).json({ errors: [{ msg: "your database is empty" }] });
@@ -29,10 +32,10 @@ const getAllParents = async (req, res) => {
 const getOneParentId = async (req, res) => {
   const id = req.params.id;
   try {
-    const resultList = await tokenSchema.find({ token: req.token });
-    if (resultList.length < 1) {
-      res.status(401).json({ error: [{ message: "Invalid Token" }] });
-    }
+    // const resultList = await tokenSchema.find({ token: req.token });
+    // if (resultList.length < 1) {
+    //   res.status(401).json({ error: [{ message: "Invalid Token" }] });
+    // }
     const searchedParent = await Parent.findOne({ _id: id });
     if (!searchedParent) {
       return res.status(101).json({ errors: [{ msg: "parent not found" }] });
@@ -49,15 +52,15 @@ const getOneParentId = async (req, res) => {
 const addParent = async (req, res) => {
   const parentInfo = req.body;
   try {
-    const resultList = await tokenSchema.find({ token: req.token });
-    if (resultList.length < 1) {
-      res.status(401).json({ error: [{ message: "Invalid Token" }] });
-    }
+    // const resultList = await tokenSchema.find({ token: req.token });
+    // if (resultList.length < 1) {
+    //   res.status(401).json({ error: [{ message: "Invalid Token" }] });
+    // }
     const hashedPasword = await bcrypt.hash(parentInfo.password, 10);
     const newObjectID = mongoose.Types.ObjectId();
     const newParent = new Parent({
       id: newObjectID,
-      userName: parentInfo.userName,
+      nic: parentInfo.nic,
       firstName: parentInfo.firstName,
       lastName: parentInfo.lastName,
       age: parentInfo.age,
@@ -70,6 +73,7 @@ const addParent = async (req, res) => {
       address: parentInfo.address,
       Job: parentInfo.Job,
       access_level_id: parentInfo.access_level_id,
+      student: parentInfo.student,
     });
     const newAuthModel = new authSchema({
       user_id: newObjectID,
@@ -79,7 +83,7 @@ const addParent = async (req, res) => {
       password_hash: hashedPasword,
     });
     const parents = await Parent.find();
-    const searchedParent = parents.find((elt) => elt.email == parentInfo.email);
+    const searchedParent = parents.find((elt) => elt.nic == parentInfo.nic);
     if (searchedParent) {
       res.status(201).json({ errors: [{ msg: "parent already exist" }] });
     } else {
@@ -102,10 +106,10 @@ const addParent = async (req, res) => {
 const deleteParent = async (req, res) => {
   const id = req.params.id;
   try {
-    const resultList = await tokenSchema.find({ token: req.token });
-    if (resultList.length < 1) {
-      res.status(401).json({ error: [{ message: "Invalid Token" }] });
-    }
+    // const resultList = await tokenSchema.find({ token: req.token });
+    // if (resultList.length < 1) {
+    //   res.status(401).json({ error: [{ message: "Invalid Token" }] });
+    // }
     await Parent.findByIdAndDelete(id);
     const parents = await Parent.find();
     res.status(200).json({
@@ -123,10 +127,10 @@ const updateParent = async (req, res) => {
   const id = req.params.id;
   const parentInfo = req.body;
   try {
-    const resultList = await tokenSchema.find({ token: req.token });
-    if (resultList.length < 1) {
-      res.status(401).json({ error: [{ message: "Invalid Token" }] });
-    }
+    // const resultList = await tokenSchema.find({ token: req.token });
+    // if (resultList.length < 1) {
+    //   res.status(401).json({ error: [{ message: "Invalid Token" }] });
+    // }
     const updatedParent = await Parent.findByIdAndUpdate(id, parentInfo, {
       new: true,
     });
@@ -145,10 +149,10 @@ const updateParent = async (req, res) => {
 
 const getMeeting = async (req, res) => {
   try {
-    const resultList = await tokenSchema.find({ token: req.token });
-    if (resultList.length < 1) {
-      res.status(401).json({ error: [{ message: "Invalid Token" }] });
-    }
+    // const resultList = await tokenSchema.find({ token: req.token });
+    // if (resultList.length < 1) {
+    //   res.status(401).json({ error: [{ message: "Invalid Token" }] });
+    // }
     const meetings = await meetingSchema.find({
       parent_id: req.body.parent_id,
     });
@@ -188,5 +192,6 @@ module.exports = {
   deleteParent,
   getMeeting,
   updateParent,
-  findParents, 
+  findParents,
+  AddStudenttoParent,
 };

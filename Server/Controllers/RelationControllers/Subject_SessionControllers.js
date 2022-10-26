@@ -36,10 +36,10 @@ const getOnebytId = async (req, res) => {
 const addNew = async (req, res) => {
   try {
     const newDataSchema = new DataSchema(req.body);
-    await newDataSchema.save();
+    const  dataSchema= await newDataSchema.save();
     res.status(200).json({
       errors: [{ msg: "Added successfully" }],
-      student: newStudent,
+      dataSchema
     });
   } catch (error) {
     res

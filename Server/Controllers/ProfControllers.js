@@ -59,7 +59,7 @@ const addProf = async (req, res) => {
     const newObjectID = mongoose.Types.ObjectId();
     const newProf = new Prof({
       id: newObjectID,
-      userName: profInfo.userName,
+      nic: profInfo.nic,
       firstName: profInfo.firstName,
       lastName: profInfo.lastName,
       age: profInfo.age,
@@ -87,7 +87,7 @@ const addProf = async (req, res) => {
     });
 
     const profs = await Prof.find();
-    const searchedProf = profs.find((elt) => elt.email == profInfo.email);
+    const searchedProf = profs.find((elt) => elt.nic == profInfo.nic);
     if (searchedProf) {
       res.status(201).json({ errors: [{ msg: "professor already exist" }] });
     } else {
@@ -181,8 +181,8 @@ const schedulMeeting = async (req, res) => {
     }
     const meetingModel = new meetingSchema({
       _id: mongoose.Types.ObjectId(),
-      professor_id: neetingInfo.professor_id,
-      parent_ids: neetingInfo.parent_ids,
+      professor_id: req.professor_id,
+      parent_ids: [req.parent_id],
       date: neetingInfo.date,
     });
     await meetingModel.save();

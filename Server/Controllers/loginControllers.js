@@ -47,7 +47,7 @@ const logIn = async (req, res) => {
 
 // Verify whether the token is correct
 
-// verifyToken, medlwar utils.extractToken,
+
 const verifyToken = async (req, res) => {
   try {
     const tokenList = tokenSchema.find({ token: req.token }).exec();

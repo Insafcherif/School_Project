@@ -1,12 +1,11 @@
 const mongoose = require("mongoose");
+const { Schema } = require("mongoose");
 const { AbstractBaseSchema } = require("./BaseSchema");
 
-const parentSchema = new AbstractBaseSchema(
-    {
+const schema = new AbstractBaseSchema({
   Job: {
     type: String,
   },
-}
-);
+});
 
-module.exports = mongoose.model("parent", parentSchema);
+module.exports = mongoose.model("parent", schema);

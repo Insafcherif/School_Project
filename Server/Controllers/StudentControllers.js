@@ -8,10 +8,10 @@ const authSchema = require("../SchemaModels/auth_Schema");
 
 const getAllStudents = async (req, res) => {
   try {
-    const resultList = await tokenSchema.find({ token: req.token });
-    if (resultList.length < 1) {
-      res.status(401).json({ error: [{ message: "Invalid Token" }] });
-    }
+    // const resultList = await tokenSchema.find({ token: req.token });
+    // if (resultList.length < 1) {
+    //   res.status(401).json({ error: [{ message: "Invalid Token" }] });
+    // }
     const students = await Student.find();
     if (students.length === 0) {
       res.status(201).json({ errors: [{ msg: "your database is empty" }] });
@@ -28,10 +28,10 @@ const getAllStudents = async (req, res) => {
 const getOneStudentId = async (req, res) => {
   const id = req.params.id;
   try {
-    const resultList = await tokenSchema.find({ token: req.token });
-    if (resultList.length < 1) {
-      res.status(401).json({ error: [{ message: "Invalid Token" }] });
-    }
+    // const resultList = await tokenSchema.find({ token: req.token });
+    // if (resultList.length < 1) {
+    //   res.status(401).json({ error: [{ message: "Invalid Token" }] });
+    // }
     const searchedStudent = await Student.findOne({ _id: id });
     if (!searchedStudent) {
       return res.status(101).json({ errors: [{ msg: "Student not found" }] });
@@ -50,15 +50,14 @@ const getOneStudentId = async (req, res) => {
 const addStudent = async (req, res) => {
   const studentInfo = req.body;
   try {
-    const resultList = await tokenSchema.find({ token: req.token });
-    if (resultList.length < 1) {
-      res.status(401).json({ error: [{ message: "Invalid Token" }] });
-    }
+    // const resultList = await tokenSchema.find({ token: req.token });
+    // if (resultList.length < 1) {
+    //   res.status(401).json({ error: [{ message: "Invalid Token" }] });
+    // }
     const hashedPasword = await bcrypt.hash(studentInfo.password, 10);
     const newObjectID = mongoose.Types.ObjectId();
     const newStudent = new Student({
       id: newObjectID,
-      userName: studentInfo.userName,
       firstName: studentInfo.firstName,
       lastName: studentInfo.lastName,
       date_of_birth: studentInfo.date_of_birth,
@@ -70,8 +69,7 @@ const addStudent = async (req, res) => {
       Phone: studentInfo.Phone,
       addmision_year: studentInfo.addmision_year,
       Comment: studentInfo.Comment,
-      Phone: studentInfo.Phone,
-    });
+          });
     const newAuthModel = new authSchema({
       user_id: newObjectID,
       UserName: studentInfo.UserName,
@@ -105,10 +103,10 @@ const addStudent = async (req, res) => {
 const deleteStudent = async (req, res) => {
   const id = req.params.id;
   try {
-    const resultList = await tokenSchema.find({ token: req.token });
-    if (resultList.length < 1) {
-      res.status(401).json({ error: [{ message: "Invalid Token" }] });
-    }
+    // const resultList = await tokenSchema.find({ token: req.token });
+    // if (resultList.length < 1) {
+    //   res.status(401).json({ error: [{ message: "Invalid Token" }] });
+    // }
     await Student.findByIdAndDelete(id);
     const students = await Student.find();
     res.status(200).json({
@@ -126,10 +124,10 @@ const updateStudent = async (req, res) => {
   const id = req.params.id;
   const studentInfo = req.body;
   try {
-    const resultList = await tokenSchema.find({ token: req.token });
-    if (resultList.length < 1) {
-      res.status(401).json({ error: [{ message: "Invalid Token" }] });
-    }
+    // const resultList = await tokenSchema.find({ token: req.token });
+    // if (resultList.length < 1) {
+    //   res.status(401).json({ error: [{ message: "Invalid Token" }] });
+    // }
     const updtedStudent = await Student.findByIdAndUpdate(id, studentInfo, {
       new: true,
     });

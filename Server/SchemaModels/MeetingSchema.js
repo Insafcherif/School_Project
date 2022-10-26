@@ -1,15 +1,10 @@
 const mongoose = require("mongoose");
 
-const meetingSchema = mongoose.Schema({
-  professor_id: {
-    type: String,
-    required: true,
-  },
+const schema = mongoose.Schema({
+  professor_id: { type: mongoose.Types.ObjectId, ref: "prof" },
   parent_ids: [
     {
-      parent_id: {
-        type: String,
-      },
+      parent_id: { type: mongoose.Types.ObjectId, ref: "parent" },
     },
   ],
   date: {
@@ -18,4 +13,4 @@ const meetingSchema = mongoose.Schema({
   },
 });
 
-module.exports = mongoose.model("meeting", meetingSchema);
+module.exports = mongoose.model("meeting", schema);

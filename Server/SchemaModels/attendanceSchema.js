@@ -1,10 +1,7 @@
 const mongoose = require("mongoose");
 
-const attendancesSchema = mongoose.Schema({
-  student_id: {
-    type: String,
-    required: true,
-  },
+const schema = mongoose.Schema({
+  student_id: { type: mongoose.Types.ObjectId, ref: "student" },
   date: {
     type: Date,
   },
@@ -16,4 +13,4 @@ const attendancesSchema = mongoose.Schema({
   },
 });
 
-module.exports = mongoose.model("attendance", attendancesSchema);
+module.exports = mongoose.model("attendance", schema);

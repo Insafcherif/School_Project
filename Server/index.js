@@ -10,7 +10,8 @@ const authRouter = require("./Routers/authRouters");
 const logInRouter = require("./Routers/LoginRouter");
 const StudentRouter = require("./Routers/StudentRouter");
 const dataBaseRouter = require("./Routers/databaseRouters/dataBasesRouters");
-const classMRouter = require ("./Routers/ClassManagementRouter")
+const classMRouter = require("./Routers/ClassManagementRouter");
+const relationRouter = require("./Routers/relationRouters/relationRouter");
 const cors = require("cors");
 
 app.use(cors());
@@ -31,3 +32,5 @@ app.use("/api/login", logInRouter);
 app.use("/api/student", StudentRouter);
 app.use("/api/database", dataBaseRouter);
 app.use("/api/classM", classMRouter);
+
+app.use("/api/relation", relationRouter);

@@ -1,7 +1,7 @@
 const mongoose = require("mongoose");
 const { AbstractBaseSchema } = require("./BaseSchema");
 
-const profSchema = new AbstractBaseSchema({
+const schema = new AbstractBaseSchema({
   bio: { type: String },
   date_of_birth: { type: String },
   contactType: {
@@ -19,4 +19,4 @@ const profSchema = new AbstractBaseSchema({
   },
 });
 
-module.exports = mongoose.model("prof", profSchema);
+module.exports = mongoose.model("prof", schema);

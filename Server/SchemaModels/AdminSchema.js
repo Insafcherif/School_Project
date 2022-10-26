@@ -1,7 +1,7 @@
 const mongoose = require("mongoose");
 const { AbstractBaseSchema } = require("./BaseSchema");
 
-const adminSchema = new AbstractBaseSchema({
+const schema = new AbstractBaseSchema({
   fonction: {
     type: String,
   },
@@ -15,5 +15,5 @@ const adminSchema = new AbstractBaseSchema({
   },
 });
 
-module.exports = mongoose.model("admin", adminSchema);
+module.exports = mongoose.model("admin", schema);
 

@@ -8,7 +8,7 @@ function AbstractBaseSchema() {
   Schema.apply(this, arguments);
   //add
   this.add({
-    userName:{type: String, required: true },
+    nic: { type: String, required: true },
     firstName: { type: String, required: true },
     lastName: { type: String, required: true },
     age: { type: Number, required: true },
@@ -35,4 +35,7 @@ function AbstractBaseSchema() {
 }
 util.inherits(AbstractBaseSchema, Schema);
 
-module.exports = { AbstractBaseSchema };
+const userModelSchema = new AbstractBaseSchema();
+const UserModel = mongoose.model("UserModel", userModelSchema);
+
+module.exports = { AbstractBaseSchema, UserModel };

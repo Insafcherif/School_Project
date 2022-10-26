@@ -1,7 +1,6 @@
 const mongoose = require("mongoose");
 
 const studSchema = mongoose.Schema({
-  userName: { type: String, required: true },
   firstName: {
     type: String,
     required: true,
@@ -21,7 +20,7 @@ const studSchema = mongoose.Schema({
   },
   role: {
     type: String,
-     required: false,
+    required: false,
   },
   Pict: {
     type: String,
@@ -37,6 +36,7 @@ const studSchema = mongoose.Schema({
     required: false,
   },
   Phone: { type: Number },
+  // parent_id: [{ type: mongoose.Types.ObjectId, ref: "parent" }],
 });
 
 module.exports = mongoose.model("student", studSchema);

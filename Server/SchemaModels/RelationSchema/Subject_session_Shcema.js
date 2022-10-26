@@ -1,18 +1,9 @@
 const mongoose = require("mongoose");
 
 const schema = new mongoose.Schema({
-  session_id: {
-    type: String,
-    required: true,
-  },
-  subject_id: {
-    type: String,
-    required: true,
-  },
-  class_id: {
-    type: String,
-    required: true,
-  },
+  session_id: { type: mongoose.Types.ObjectId, ref: "session" },
+  subject_id: { type: mongoose.Types.ObjectId, ref: "subject" },
+  class_id: { type: mongoose.Types.ObjectId, ref: "class" },
 });
 
-module.exports = mongoose.model("Session_Subject", schema);
+module.exports = mongoose.model("Session_Subject_class", schema);
