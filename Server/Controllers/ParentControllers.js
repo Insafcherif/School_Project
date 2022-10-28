@@ -17,7 +17,7 @@ const getAllParents = async (req, res) => {
     // if (resultList.length < 1) {
     //   res.status(401).json({ error: [{ message: "Invalid Token" }] });
     // }
-    const parents = await Parent.find();
+    const parents = await Parent.find().populate("student");
     if (parents.length === 0) {
       res.status(201).json({ errors: [{ msg: "your database is empty" }] });
     } else {

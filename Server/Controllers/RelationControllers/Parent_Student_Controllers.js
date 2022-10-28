@@ -4,6 +4,20 @@ const Student = require("../../SchemaModels/StudentSchema");
 const { deleteStudent } = require("../../Controllers/StudentControllers");
 const mongoose = require("mongoose");
 
+// Get all data
+const getAll = async (req, res) => {
+  try {
+    const dataSchemas = await ParStudRel.find();
+    if (dataSchemas.length === 0) {
+      res.status(201).json({ errors: [{ msg: "your database is empty" }] });
+    } else {
+      res.status(200).json({ dataSchemas: dataSchemas });
+    }
+  } catch (error) {
+    res.status(500).json({ errors: [{ msg: "get all data is failed!" }] });
+  }
+};
+
 //Get all parents of all students
 
 const getAllParents = async (req, res) => {
@@ -28,9 +42,9 @@ const getAllParents = async (req, res) => {
 const getAllParentsforStudent = async (req, res) => {
   const id = mongoose.Types.ObjectId(req.params.id);
   try {
-    const parents = await ParStudRel.find({ student_id: id })
-      .populate("parent_id")
-      .populate("student_id");
+    const parents = await ParStudRel.find({ student_id: id }).populate(
+      "parent_id"
+    );
     if (parents.length === 0) {
       res.status(201).json({ errors: [{ msg: "your database is empty" }] });
     } else {
@@ -48,24 +62,13 @@ const getAllParentsforStudent = async (req, res) => {
 const getStudentforOneParent = async (req, res) => {
   const id = mongoose.Types.ObjectId(req.params.id);
   try {
-    const students = await ParStudRel.find({ parent_id: id });
+    const students = await ParStudRel.find({ parent_id: id }).populate(
+      "parent_id"
+    );
     if (students.length === 0) {
       res.status(201).json({ errors: [{ msg: "your database is empty" }] });
     } else {
-      console.log(students.length);
-      const studentforPranets = await Student.findOne({
-        _id: { $in: [students[i].student_id] },
-      });
-      for (i = 0; i < students.length; i++) {
-        const studentforPranets = await Student.findOne({
-          _id: { $in: [students[i].student_id] },
-        });
-        console.log(hello);
-        console.log(studentforPranets);
-      }
-
-      console.log(studentforPranets);
-      res.status(200).json({ studentforPranets });
+      res.status(200).json({ students });
     }
   } catch (error) {
     res
@@ -98,19 +101,42 @@ const addParenttoStudent = async (req, res) => {
   try {
     const parent = await Parent.findOne({ firstName: req.params.parent });
     const student = await Student.findOne({ firstName: req.params.student });
-    console.log(student._id);
     const newPSrel = new ParStudRel({
       parent_id: parent._id,
       student_id: student._id,
       relation: partStudInfo.relation,
       is_parent: true,
     });
-    console.log(newPSrel);
-    await newPSrel.save();
-    res.status(200).json({
-      errors: [{ msg: "Added successfully" }],
-      parStudRel: newPSrel,
+    const perRel = await ParStudRel.find({
+      $and: [
+        { parent_id: newPSrel.parent_id },
+        { student_id: newPSrel.student_id },
+      ],
     });
+    if (!(perRel.length === 0)) {
+      res
+        .status(201)
+        .json({ errors: [{ msg: "parent already adeed to student" }] });
+    } else {
+      await newPSrel.save();
+      const newParent = await Parent.findByIdAndUpdate(
+        { _id: newPSrel.parent_id },
+        { $push: { student: student._id } },
+        { new: true, useFindAndModify: false }
+      );
+      const newSudent = await Student.findByIdAndUpdate(
+        { _id: newPSrel.student_id },
+        { $set: { parent: parent._id } },
+        { new: true, useFindAndModify: false }
+      );
+
+      res.status(200).json({
+        errors: [{ msg: "Added successfully" }],
+        parStudRel: newPSrel,
+        newSudent,
+        newParent,
+      });
+    }
   } catch (error) {
     res.status(500).json({ errors: [{ msg: "Adding  new data is failed" }] });
   }
@@ -119,8 +145,7 @@ const addParenttoStudent = async (req, res) => {
 
 const deleteallData = async (req, res) => {
   try {
-    const dataSchemas = await ParStudRel.find();
-    await ParStudRel.deleteMany({ _id: dataSchemas._id });
+    await ParStudRel.remove({});
     res.status(200).json({
       errors: [{ msg: "delete is succesfully done" }],
     });
@@ -190,4 +215,5 @@ module.exports = {
   getAllParents,
   getStudentforOneParent,
   deleteallData,
+  getAll,
 };

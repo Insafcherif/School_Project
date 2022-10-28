@@ -1,14 +1,16 @@
 const ProfSubject = require("../../SchemaModels/RelationSchema/Prof_Subject_Schema");
 const Prof = require("../../SchemaModels/ProfSchema");
 const Subject = require("../../SchemaModels/Subject_Schema");
+const Level = require("../../SchemaModels/levelSchema");
 const mongoose = require("mongoose");
+
 //Get all
 
 const getAll = async (req, res) => {
   try {
     const profSubjects = await ProfSubject.find()
       .populate("professor_id")
-      .populate("subject_id");
+      .populate("subject_id").populate("level_id");
     if (profSubjects.length === 0) {
       res.status(201).json({ errors: [{ msg: "your database is empty" }] });
     } else {
@@ -38,29 +40,60 @@ const getOnebytId = async (req, res) => {
 // Add SubjectProf
 
 const AddSubjProf = async (req, res) => {
-  const { id, subject } = req.params;
+  const { id, level, subject } = req.params;
   const profSubjectInfo = req.body;
   try {
-    const parent = await Prof.findOne({
+    const prof = await Prof.findOne({
       _id: mongoose.Types.ObjectId(req.params.id),
     });
     const subject = await Subject.findOne({ subject: req.params.subject });
-
+    const level = await Level.findOne({ levelNumber: req.params.level });
+    console.log(level);
     const newProfSubj = new ProfSubject({
-      professor_id: parent._id,
+      professor_id: prof._id,
+      level_id: level._id,
       subject_id: subject._id,
       start_date: profSubjectInfo.start_date,
       end_date: profSubjectInfo.start_date,
     });
-    await newProfSubj.save();
-    res.status(200).json({
-      errors: [{ msg: "Added successfully" }],
-      newProfSubj: newProfSubj,
+    const ProflevelSubj = await ProfSubject.find({
+      $and: [
+        { professor_id: newProfSubj.professor_id },
+        { level_id: newProfSubj.level_id },
+        { subject_id: newProfSubj.subject_id },
+      ],
     });
-  } catch (error) {}
+    if (!(ProflevelSubj.length === 0)) {
+      res
+        .status(201)
+        .json({ errors: [{ msg: "Sujbect already adeed to Professor for this level" }] });
+    } else {
+      await newProfSubj.save();
+      res.status(200).json({
+        errors: [{ msg: "Added successfully" }],
+        newProfSubj: newProfSubj,
+      });
+    }
+  } catch (error) {
+    res.status(500).json({ errors: [{ msg: "Adding is failed" }] });
+  }
 };
 
-//Delete data
+//Delete all data
+
+const deleteallData = async (req, res) => {
+  try {
+    await ProfSubject.remove({});
+
+    res.status(200).json({
+      errors: [{ msg: "delete is succesfully done" }],
+    });
+  } catch (error) {
+    res.status(500).json({ errors: [{ msg: "deleting all is failed" }] });
+  }
+};
+
+//Delete data by id
 
 const deleteData = async (req, res) => {
   const id = req.params.id;
@@ -118,4 +151,5 @@ module.exports = {
   getAll,
   findData,
   AddSubjProf,
+  deleteallData,
 };

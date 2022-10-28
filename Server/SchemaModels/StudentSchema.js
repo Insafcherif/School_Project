@@ -36,6 +36,7 @@ const studSchema = mongoose.Schema({
     required: false,
   },
   Phone: { type: Number },
- });
+  parent: { type: mongoose.Types.ObjectId, ref: "parent" },
+});
 
 module.exports = mongoose.model("student", studSchema);

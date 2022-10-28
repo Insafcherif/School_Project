@@ -6,6 +6,7 @@ const schema = new AbstractBaseSchema({
   Job: {
     type: String,
   },
+  student: { type: mongoose.Types.ObjectId, ref: "student" },
 });
 
 module.exports = mongoose.model("parent", schema);
