@@ -39,12 +39,10 @@ const addNew = async (req, res) => {
     await newDataSchema.save();
     res.status(200).json({
       errors: [{ msg: "Added successfully" }],
-      student: newStudent,
+      newDataSchema: newDataSchema,
     });
   } catch (error) {
-    res
-      .status(500)
-      .json({ errors: [{ msg: "Adding  new data is failed" }] });
+    res.status(500).json({ errors: [{ msg: "Adding  new data is failed" }] });
   }
 };
 
@@ -53,7 +51,6 @@ const addNew = async (req, res) => {
 const deleteData = async (req, res) => {
   const id = req.params.id;
   try {
- 
     await DataSchema.findByIdAndDelete(id);
     const dataSchemas = await DataSchema.find();
     res.status(200).json({
@@ -69,8 +66,8 @@ const deleteData = async (req, res) => {
 
 const updateData = async (req, res) => {
   const id = req.params.id;
-    try {
-     const updatedData = await DataSchema.findByIdAndUpdate(id, req.body, {
+  try {
+    const updatedData = await DataSchema.findByIdAndUpdate(id, req.body, {
       new: true,
     });
     res.status(200).json({
@@ -85,21 +82,26 @@ const updateData = async (req, res) => {
 //find data my name
 
 const findData = async (req, res) => {
-    const name = req.body.name;
-    try {
-      const query = {};
-      query[name] = { $regex: req.body.value };
-      const resultList = await DataSchema.find(query);
-      if (!resultList) {
-        return res.status(101).json({ errors: [{ msg: "Name not found" }] });
-      } else {
-        res.status(200).json({ resultList });
-      }
-    } catch (error) {
-      res.status(500).json({ errors: [{ msg: "Finding data is failed" }] });
+  const name = req.body.name;
+  try {
+    const query = {};
+    query[name] = { $regex: req.body.value };
+    const resultList = await DataSchema.find(query);
+    if (!resultList) {
+      return res.status(101).json({ errors: [{ msg: "Name not found" }] });
+    } else {
+      res.status(200).json({ resultList });
     }
-  };
+  } catch (error) {
+    res.status(500).json({ errors: [{ msg: "Finding data is failed" }] });
+  }
+};
 
 module.exports = {
-    updateData, deleteData, addNew, getOnebytId, getAll, findData
+  updateData,
+  deleteData,
+  addNew,
+  getOnebytId,
+  getAll,
+  findData,
 };

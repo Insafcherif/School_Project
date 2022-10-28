@@ -14,6 +14,7 @@ const classMRouter = require("./Routers/ClassManagementRouter");
 const relationRouter = require("./Routers/relationRouters/relationRouter");
 const cors = require("cors");
 
+
 app.use(cors());
 app.use(express.json());
 app.listen(port, (e) => {
@@ -23,6 +24,8 @@ app.listen(port, (e) => {
 });
 
 connectdb();
+
+
 
 app.use("/api", userRouter);
 app.use("/api/professor", profRouter);

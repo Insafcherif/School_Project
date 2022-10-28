@@ -12,12 +12,12 @@ const {
 const  {extractToken} = require("../Midelwars/extracToken");
 
 
-router.get("/allprofs", extractToken, getAllProfs);
-router.get("/:id",extractToken, getOneProfById);
-router.post("/addprof", extractToken, addProf);
-router.delete("/:id",extractToken, deteleProf);
-router.put("/:id", extractToken,updateProf);
+router.get("/allprofs",  getAllProfs);
+router.get("/:id", getOneProfById);
+router.post("/addprof",  addProf);
+router.delete("/:id", deteleProf);
+router.put("/:id", updateProf);
 router.post("/find", findProf);
-router.post("/scheduleMeeting",extractToken, schedulMeeting);
+router.post("/scheduleMeeting", schedulMeeting);
 
 module.exports = router;

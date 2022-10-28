@@ -3,6 +3,7 @@ const Student = require("../SchemaModels/StudentSchema");
 const bcrypt = require("bcryptjs");
 const tokenSchema = require("../SchemaModels/token_Schema");
 const authSchema = require("../SchemaModels/auth_Schema");
+const ParStudRel = require("../SchemaModels/RelationSchema/Parent_Student_Schema");
 
 //Get all Students
 
@@ -69,7 +70,7 @@ const addStudent = async (req, res) => {
       Phone: studentInfo.Phone,
       addmision_year: studentInfo.addmision_year,
       Comment: studentInfo.Comment,
-          });
+    });
     const newAuthModel = new authSchema({
       user_id: newObjectID,
       UserName: studentInfo.UserName,
@@ -98,6 +99,26 @@ const addStudent = async (req, res) => {
   }
 };
 
+//Delete all Students
+
+const deleteAllStudents = async (req, res) => {
+  try {
+    // const resultList = await tokenSchema.find({ token: req.token });
+    // if (resultList.length < 1) {
+    //   res.status(401).json({ error: [{ message: "Invalid Token" }] });
+    // }
+    await Student.remove({});
+
+    res.status(200).json({
+      errors: [{ msg: "deleting all students is succesfully done" }],
+    });
+  } catch (error) {
+    res
+      .status(500)
+      .json({ errors: [{ msg: "deleting all students is failed" }] });
+  }
+};
+
 //Delete Student
 
 const deleteStudent = async (req, res) => {
@@ -107,6 +128,14 @@ const deleteStudent = async (req, res) => {
     // if (resultList.length < 1) {
     //   res.status(401).json({ error: [{ message: "Invalid Token" }] });
     // }
+
+    const ParentStudent = await ParStudRel.find({
+      student_id: mongoose.Types.ObjectId(id),
+    });
+    console.log(ParentStudent);
+    await ParStudRel.deleteMany({
+      student_id: mongoose.Types.ObjectId(id),
+    });
     await Student.findByIdAndDelete(id);
     const students = await Student.find();
     res.status(200).json({
@@ -140,4 +169,11 @@ const updateStudent = async (req, res) => {
   }
 };
 
-module.exports = {updateStudent, deleteStudent, addStudent, getOneStudentId, getAllStudents };
+module.exports = {
+  updateStudent,
+  deleteStudent,
+  addStudent,
+  getOneStudentId,
+  getAllStudents,
+  deleteAllStudents,
+};

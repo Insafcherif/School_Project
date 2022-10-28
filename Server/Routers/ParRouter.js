@@ -7,7 +7,7 @@ const {
   deleteParent,
   getMeeting,
   updateParent,
-  findParents, 
+  findParents, deleteParents
 } = require("../Controllers/ParentControllers");
 const  {extractToken} = require("../Midelwars/extracToken")
 
@@ -17,6 +17,7 @@ router.get("/:id", getOneParentId);
 router.post("/addPart",  addParent);
 router.put("/:id",  updateParent);
 router.delete("/:id",  deleteParent);
+router.delete("/deleteall",deleteParents )
 router.get("/meetings", getMeeting);
 router.post("/find", findParents);
 

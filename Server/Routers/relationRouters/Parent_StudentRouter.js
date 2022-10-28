@@ -7,16 +7,18 @@ const {
   getOnebytId,
   getAllParentsforStudent,
   findData,
-  getAllParents
+  getAllParents, getStudentforOneParent, deleteallData
 } = require("../../Controllers/RelationControllers/Parent_Student_Controllers");
 
 router.get("/:id/allParent", getAllParentsforStudent);
 router.get("/allParents", getAllParents);
+router.delete("/deleteall", deleteallData);
 router.get("/:id", getOnebytId);
 router.post("/:student/:parent/addparentRel", addParenttoStudent);
 router.put("/:id", updateData);
 router.delete("/:id", deleteData);
 router.post("/find", findData);
+router.get("/:id/AllStudents", getStudentforOneParent);
 
 
 module.exports = router;

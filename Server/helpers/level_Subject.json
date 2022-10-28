@@ -1,0 +1,102 @@
+{
+    "levels": [
+        {
+            "levelNumber": 1,
+            "levelPrice": 3500,
+            "Subjects": [
+                "English",
+                "Frensh",
+                "Arabic",
+                "Islamic Education",
+                "Music"
+            ]
+        },
+        {
+            "levelNumber": 2,
+            "levelPrice": 4000,
+            "Subjects": [
+                "English",
+                "Frensh",
+                "Arabic",
+                "Math",
+                "Islamic Education",
+                "Music",
+                "I.T (Information Technology)",
+                "Art"
+            ]
+        },
+        {
+            "levelNumber": 3,
+            "levelPrice": 4500,
+            "Subjects": [
+                "English",
+                "Frensh",
+                "Arabic",
+                "Math",
+                "Islamic Education",
+                "Music",
+                "I.T (Information Technology)",
+                "Art",
+                "Science",
+                "Physical Education"
+            ]
+        },
+        {
+            "levelNumber": 4,
+            "levelPrice": 5000,
+            "Subjects": [
+                "English",
+                "Frensh",
+                "Arabic",
+                "Math",
+                "Islamic Education",
+                "Music",
+                "I.T (Information Technology)",
+                "Art",
+                "Science",
+                "Physical Education",
+                "Geography"
+            ]
+        },
+        {
+            "levelNumber": 5,
+            "levelPrice": 5500,
+            "Subjects": [
+                "English",
+                "Frensh",
+                "Arabic",
+                "Math",
+                "Islamic Education",
+                "Music",
+                "I.T (Information Technology)",
+                "Art",
+                "Science",
+                "Physical Education",
+                "Geography",
+                "Social Education",
+                "History"
+            ]
+        },
+        {
+            "levelNumber": 6,
+            "levelPrice": 6000,
+            "Subjects": [
+                "English",
+                "Frensh",
+                "Arabic",
+                "Physical Education",
+                "Math",
+                "Science",
+                "I.T (Information Technology)",
+                "Islamic Education",
+                "Art",
+                "Geography",
+                "Chemistry",
+                "Physics",
+                "Social Education",
+                "History",
+                "Music"
+            ]
+        }
+    ]
+}

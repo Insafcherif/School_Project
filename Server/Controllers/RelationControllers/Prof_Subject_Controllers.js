@@ -1,14 +1,18 @@
-const DataSchema = require("../../SchemaModels/RelationSchema/Prof_Subject_Schema");
-
+const ProfSubject = require("../../SchemaModels/RelationSchema/Prof_Subject_Schema");
+const Prof = require("../../SchemaModels/ProfSchema");
+const Subject = require("../../SchemaModels/Subject_Schema");
+const mongoose = require("mongoose");
 //Get all
 
 const getAll = async (req, res) => {
   try {
-    const dataSchemas = await DataSchema.find();
-    if (dataSchemas.length === 0) {
+    const profSubjects = await ProfSubject.find()
+      .populate("professor_id")
+      .populate("subject_id");
+    if (profSubjects.length === 0) {
       res.status(201).json({ errors: [{ msg: "your database is empty" }] });
     } else {
-      res.status(200).json({ dataSchemas: dataSchemas });
+      res.status(200).json({ profSubjects: profSubjects });
     }
   } catch (error) {
     res.status(500).json({ errors: [{ msg: "get all data is failed!" }] });
@@ -20,32 +24,40 @@ const getAll = async (req, res) => {
 const getOnebytId = async (req, res) => {
   const id = req.params.id;
   try {
-    const searchedData = await DataSchema.findOne({ _id: id });
-    if (!searchedData) {
+    const searProfSubj = await ProfSubject.findOne({ _id: id });
+    if (!searProfSubj) {
       return res.status(101).json({ errors: [{ msg: "Data not found" }] });
     } else {
-      res.status(200).json({ dataSchema: searchedData });
+      res.status(200).json({ ProfSubject: searProfSubj });
     }
   } catch (error) {
     res.status(500).json({ errors: [{ msg: "getting one data is failed" }] });
   }
 };
 
-//Add new data
+// Add SubjectProf
 
-const addNew = async (req, res) => {
+const AddSubjProf = async (req, res) => {
+  const { id, subject } = req.params;
+  const profSubjectInfo = req.body;
   try {
-    const newDataSchema = new DataSchema(req.body);
-    const  dataSchema= await newDataSchema.save();
+    const parent = await Prof.findOne({
+      _id: mongoose.Types.ObjectId(req.params.id),
+    });
+    const subject = await Subject.findOne({ subject: req.params.subject });
+
+    const newProfSubj = new ProfSubject({
+      professor_id: parent._id,
+      subject_id: subject._id,
+      start_date: profSubjectInfo.start_date,
+      end_date: profSubjectInfo.start_date,
+    });
+    await newProfSubj.save();
     res.status(200).json({
       errors: [{ msg: "Added successfully" }],
-      dataSchema
+      newProfSubj: newProfSubj,
     });
-  } catch (error) {
-    res
-      .status(500)
-      .json({ errors: [{ msg: "Adding  new data is failed" }] });
-  }
+  } catch (error) {}
 };
 
 //Delete data
@@ -53,12 +65,11 @@ const addNew = async (req, res) => {
 const deleteData = async (req, res) => {
   const id = req.params.id;
   try {
- 
-    await DataSchema.findByIdAndDelete(id);
-    const dataSchemas = await DataSchema.find();
+    await ProfSubject.findByIdAndDelete(id);
+    const profSubjects = await ProfSubject.find();
     res.status(200).json({
       errors: [{ msg: "delete is succesfully done" }],
-      dataSchemas: dataSchemas,
+      profSubjects: profSubjects,
     });
   } catch (error) {
     res.status(500).json({ errors: [{ msg: "deleting is failed" }] });
@@ -69,8 +80,8 @@ const deleteData = async (req, res) => {
 
 const updateData = async (req, res) => {
   const id = req.params.id;
-    try {
-     const updatedData = await DataSchema.findByIdAndUpdate(id, req.body, {
+  try {
+    const updatedData = await ProfSubject.findByIdAndUpdate(id, req.body, {
       new: true,
     });
     res.status(200).json({
@@ -85,21 +96,26 @@ const updateData = async (req, res) => {
 //find data my name
 
 const findData = async (req, res) => {
-    const name = req.body.name;
-    try {
-      const query = {};
-      query[name] = { $regex: req.body.value };
-      const resultList = await DataSchema.find(query);
-      if (!resultList) {
-        return res.status(101).json({ errors: [{ msg: "Name not found" }] });
-      } else {
-        res.status(200).json({ resultList });
-      }
-    } catch (error) {
-      res.status(500).json({ errors: [{ msg: "Finding data is failed" }] });
+  const name = req.body.name;
+  try {
+    const query = {};
+    query[name] = { $regex: req.body.value };
+    const resultList = await ProfSubject.find(query);
+    if (!resultList) {
+      return res.status(101).json({ errors: [{ msg: "Name not found" }] });
+    } else {
+      res.status(200).json({ resultList });
     }
-  };
+  } catch (error) {
+    res.status(500).json({ errors: [{ msg: "Finding data is failed" }] });
+  }
+};
 
 module.exports = {
-    updateData, deleteData, addNew, getOnebytId, getAll, findData
+  updateData,
+  deleteData,
+  getOnebytId,
+  getAll,
+  findData,
+  AddSubjProf,
 };

@@ -7,6 +7,7 @@ const meetingSchema = require("../SchemaModels/MeetingSchema");
 const DataSchema = require("../SchemaModels/RelationSchema/Parent_Student_Schema");
 const { ObjectId } = require("mongodb");
 const Student = require("../SchemaModels/StudentSchema");
+const ParStudRel = require("../SchemaModels/RelationSchema/Parent_Student_Schema");
 
 //Get all Parents
 
@@ -73,7 +74,6 @@ const addParent = async (req, res) => {
       address: parentInfo.address,
       Job: parentInfo.Job,
       access_level_id: parentInfo.access_level_id,
-      student: parentInfo.student,
     });
     const newAuthModel = new authSchema({
       user_id: newObjectID,
@@ -101,7 +101,26 @@ const addParent = async (req, res) => {
   }
 };
 
-//Delete parent
+//Delete all parent
+
+const deleteParents = async (req, res) => {
+  try {
+    // const resultList = await tokenSchema.find({ token: req.token });
+    // if (resultList.length < 1) {
+    //   res.status(401).json({ error: [{ message: "Invalid Token" }] });
+    // }
+     await Parent.remove({});
+    res.status(200).json({
+      errors: [{ msg: "deleting all parents is succesfully done" }],
+    });
+  } catch (error) {
+    res
+      .status(500)
+      .json({ errors: [{ msg: "deleting all parents is failed" }] });
+  }
+};
+
+//Delete parent by id
 
 const deleteParent = async (req, res) => {
   const id = req.params.id;
@@ -110,6 +129,9 @@ const deleteParent = async (req, res) => {
     // if (resultList.length < 1) {
     //   res.status(401).json({ error: [{ message: "Invalid Token" }] });
     // }
+    await ParStudRel.deleteMany({
+      parent_id: mongoose.Types.ObjectId(id),
+    });
     await Parent.findByIdAndDelete(id);
     const parents = await Parent.find();
     res.status(200).json({
@@ -193,5 +215,5 @@ module.exports = {
   getMeeting,
   updateParent,
   findParents,
-  AddStudenttoParent,
+  deleteParents,
 };

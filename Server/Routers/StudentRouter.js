@@ -5,7 +5,7 @@ const {
   deleteStudent,
   addStudent,
   getOneStudentId,
-  getAllStudents,
+  getAllStudents, deleteAllStudents
 } = require("../Controllers/StudentControllers");
 const { extractToken } = require("../Midelwars/extracToken");
 
@@ -14,6 +14,7 @@ router.get("/:id",  getOneStudentId);
 router.post("/addStudent",  addStudent);
 router.delete("/:id",  deleteStudent);
 router.put("/:id",  updateStudent);
+router.delete("/deleteAll",deleteAllStudents )
 
 
 module.exports = router;
