@@ -9,11 +9,7 @@ const ParStudRel = require("../SchemaModels/RelationSchema/Parent_Student_Schema
 
 const getAllStudents = async (req, res) => {
   try {
-    // const resultList = await tokenSchema.find({ token: req.token });
-    // if (resultList.length < 1) {
-    //   res.status(401).json({ error: [{ message: "Invalid Token" }] });
-    // }
-    const students = await Student.find().populate("parent");;
+    const students = await Student.find().populate("parent");
     if (students.length === 0) {
       res.status(201).json({ errors: [{ msg: "your database is empty" }] });
     } else {
@@ -29,10 +25,6 @@ const getAllStudents = async (req, res) => {
 const getOneStudentId = async (req, res) => {
   const id = req.params.id;
   try {
-    // const resultList = await tokenSchema.find({ token: req.token });
-    // if (resultList.length < 1) {
-    //   res.status(401).json({ error: [{ message: "Invalid Token" }] });
-    // }
     const searchedStudent = await Student.findOne({ _id: id });
     if (!searchedStudent) {
       return res.status(101).json({ errors: [{ msg: "Student not found" }] });
@@ -51,10 +43,6 @@ const getOneStudentId = async (req, res) => {
 const addStudent = async (req, res) => {
   const studentInfo = req.body;
   try {
-    // const resultList = await tokenSchema.find({ token: req.token });
-    // if (resultList.length < 1) {
-    //   res.status(401).json({ error: [{ message: "Invalid Token" }] });
-    // }
     const hashedPasword = await bcrypt.hash(studentInfo.password, 10);
     const newObjectID = mongoose.Types.ObjectId();
     const newStudent = new Student({
@@ -103,10 +91,6 @@ const addStudent = async (req, res) => {
 
 const deleteAllStudents = async (req, res) => {
   try {
-    // const resultList = await tokenSchema.find({ token: req.token });
-    // if (resultList.length < 1) {
-    //   res.status(401).json({ error: [{ message: "Invalid Token" }] });
-    // }
     await Student.remove({});
 
     res.status(200).json({
@@ -124,11 +108,6 @@ const deleteAllStudents = async (req, res) => {
 const deleteStudent = async (req, res) => {
   const id = req.params.id;
   try {
-    // const resultList = await tokenSchema.find({ token: req.token });
-    // if (resultList.length < 1) {
-    //   res.status(401).json({ error: [{ message: "Invalid Token" }] });
-    // }
-
     const ParentStudent = await ParStudRel.find({
       student_id: mongoose.Types.ObjectId(id),
     });
@@ -153,10 +132,6 @@ const updateStudent = async (req, res) => {
   const id = req.params.id;
   const studentInfo = req.body;
   try {
-    // const resultList = await tokenSchema.find({ token: req.token });
-    // if (resultList.length < 1) {
-    //   res.status(401).json({ error: [{ message: "Invalid Token" }] });
-    // }
     const updtedStudent = await Student.findByIdAndUpdate(id, studentInfo, {
       new: true,
     });

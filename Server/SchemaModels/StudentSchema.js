@@ -37,6 +37,7 @@ const studSchema = mongoose.Schema({
   },
   Phone: { type: Number },
   parent: { type: mongoose.Types.ObjectId, ref: "parent" },
+  class : { type: mongoose.Types.ObjectId, ref: "clas" },
 });
 
 module.exports = mongoose.model("student", studSchema);

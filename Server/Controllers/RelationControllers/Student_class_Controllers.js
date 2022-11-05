@@ -1,14 +1,19 @@
-const DataSchema = require("../../SchemaModels/RelationSchema/student_class_Schema");
+const StudentClass = require("../../SchemaModels/RelationSchema/student_class_Schema");
+const Class = require("../../SchemaModels/ClasSchema");
+const Student = require("../../SchemaModels/StudentSchema");
+const mongoose = require("mongoose");
 
 //Get all
 
 const getAll = async (req, res) => {
   try {
-    const dataSchemas = await DataSchema.find();
-    if (dataSchemas.length === 0) {
+    const StClassList = await StudentClass.find()
+      .populate("class_id")
+      .populate("students_id");
+    if (StClassList.length === 0) {
       res.status(201).json({ errors: [{ msg: "your database is empty" }] });
     } else {
-      res.status(200).json({ dataSchemas: dataSchemas });
+      res.status(200).json({ StClassList: StClassList });
     }
   } catch (error) {
     res.status(500).json({ errors: [{ msg: "get all data is failed!" }] });
@@ -20,31 +25,152 @@ const getAll = async (req, res) => {
 const getOnebytId = async (req, res) => {
   const id = req.params.id;
   try {
-    const searchedData = await DataSchema.findOne({ _id: id });
+    const searchedData = await StudentClass.findOne({ _id: id });
     if (!searchedData) {
       return res.status(101).json({ errors: [{ msg: "Data not found" }] });
     } else {
-      res.status(200).json({ dataSchema: searchedData });
+      res.status(200).json({ StudentClass: searchedData });
+    }
+  } catch (error) {
+    res.status(500).json({ errors: [{ msg: "getting one data is failed" }] });
+  }
+};
+//Get all students by class
+
+const getStudentOneClass = async (req, res) => {
+  const id = mongoose.Types.ObjectId(req.params.id);
+  try {
+    const searchedData = await StudentClass.findOne({ class_id: id }).populate("students_id");;
+    console.log(searchedData.students_id);
+    if (!searchedData) {
+      return res.status(101).json({ errors: [{ msg: "Data not found" }] });
+    } else {
+      res.status(200).json({ studentClass: searchedData });
     }
   } catch (error) {
     res.status(500).json({ errors: [{ msg: "getting one data is failed" }] });
   }
 };
 
-//Add new data
+//Add class to student
 
-const addNew = async (req, res) => {
+const addClassStudent = async (req, res) => {
+  const { id, className } = req.params;
+  const StClInfo = req.body;
   try {
-    const newDataSchema = new DataSchema(req.body);
-    const  dataSchema= await newDataSchema.save();
+    const student = await Student.findOne({ _id: req.params.id });
+    const searClass = await Class.findOne({ className: req.params.className });
+    const newStudentClass = new StudentClass({
+      class_id: searClass._id,
+      students_id: [student._id],
+      reg_date: StClInfo.reg_date,
+      end_date: StClInfo.end_date,
+    });
+    const findStInCLass = await StudentClass.find({
+      $and: [
+        { class_id: newStudentClass.class_id },
+        { students_id: newStudentClass.students_id },
+      ],
+    });
+    const findclass = await StudentClass.findOne({
+      class_id: newStudentClass.class_id,
+    });
+    if (!(findStInCLass.length === 0)) {
+      res
+        .status(201)
+        .json({ errors: [{ msg: "Student already adeed to this class" }] });
+    } else if (findclass) {
+      findclass.students_id.push(newStudentClass.students_id);
+      await findclass.save();
+      const updateClass = await Class.findByIdAndUpdate(
+        { _id: findclass.class_id },
+        { $push: { students: student._id } },
+        { new: true, useFindAndModify: false }
+      );
+      const newSudent = await Student.findByIdAndUpdate(
+        { _id: findclass.student_id },
+        { $set: { class: searClass._id } },
+        { new: true, useFindAndModify: false })
+      res.status(200).json({
+        errors: [{ msg: "Added successfully" }],
+        findclass, newSudent, updateClass
+      });
+    } else {
+      const studentClass = await newStudentClass.save();
+      const updateClass = await Class.findByIdAndUpdate(
+        { _id: findStInCLass.class_id },
+        { $push: { students: student._id } },
+        { new: true, useFindAndModify: false }
+      );
+      const newSudent = await Student.findByIdAndUpdate(
+        { _id: findStInCLass.student_id },
+        { $set: { class: searClass._id } },
+        { new: true, useFindAndModify: false })
+      res.status(200).json({
+        errors: [{ msg: "Added successfully" }],
+        studentClass, newSudent, updateClass
+      });
+    }
+  } catch (error) {
+    res.status(500).json({ errors: [{ msg: "Adding  new data is failed" }] });
+  }
+};
+//  Add student to class
+const addStudenttoClass = async (req, res) => {
+  const { id, student } = req.params;
+  const StClInfo = req.body;
+  try {
+    const student = await Student.findOne({ firstName: req.params.student });
+    const searClass = await Class.findOne({ _id: req.params.id });
+    const newStudentClass = new StudentClass({
+      class_id: searClass._id,
+      students_id: [student._id],
+      reg_date: StClInfo.reg_date,
+      end_date: StClInfo.end_date,
+    });
+    const findStInCLass = await StudentClass.find({
+      $and: [
+        { class_id: newStudentClass.class_id },
+        { students_id: newStudentClass.students_id },
+      ],
+    });
+    const findclass = await StudentClass.findOne({
+      class_id: newStudentClass.class_id,
+    });
+    if (!(findStInCLass.length === 0)) {
+      res
+        .status(201)
+        .json({ errors: [{ msg: "Student already adeed to this class" }] });
+    } else if (findclass) {
+      findclass.students_id.push(newStudentClass.students_id);
+      await findclass.save();
+      res.status(200).json({
+        errors: [{ msg: "Added successfully" }],
+        findclass,
+      });
+    } else {
+      const studentClass = await newStudentClass.save();
+      res.status(200).json({
+        errors: [{ msg: "Added successfully" }],
+        studentClass,
+      });
+    }
+  } catch (error) {
+    res.status(500).json({ errors: [{ msg: "Adding  new data is failed" }] });
+  }
+};
+
+//Delete all data
+
+const deleteallData = async (req, res) => {
+  try {
+    await StudentClass.remove({});
+
     res.status(200).json({
-      errors: [{ msg: "Added successfully" }],
-      dataSchema
+      errors: [{ msg: "delete is succesfully done" }],
     });
   } catch (error) {
-    res
-      .status(500)
-      .json({ errors: [{ msg: "Adding  new data is failed" }] });
+    res.status(500).json({ errors: [{ msg: "deleting all is failed" }] });
   }
 };
 
@@ -53,12 +179,11 @@ const addNew = async (req, res) => {
 const deleteData = async (req, res) => {
   const id = req.params.id;
   try {
- 
-    await DataSchema.findByIdAndDelete(id);
-    const dataSchemas = await DataSchema.find();
+    await StudentClass.findByIdAndDelete(id);
+    const StClassList = await StudentClass.find();
     res.status(200).json({
       errors: [{ msg: "delete is succesfully done" }],
-      dataSchemas: dataSchemas,
+      StClassList: StClassList,
     });
   } catch (error) {
     res.status(500).json({ errors: [{ msg: "deleting is failed" }] });
@@ -69,8 +194,8 @@ const deleteData = async (req, res) => {
 
 const updateData = async (req, res) => {
   const id = req.params.id;
-    try {
-     const updatedData = await DataSchema.findByIdAndUpdate(id, req.body, {
+  try {
+    const updatedData = await StudentClass.findByIdAndUpdate(id, req.body, {
       new: true,
     });
     res.status(200).json({
@@ -85,21 +210,29 @@ const updateData = async (req, res) => {
 //find data my name
 
 const findData = async (req, res) => {
-    const name = req.body.name;
-    try {
-      const query = {};
-      query[name] = { $regex: req.body.value };
-      const resultList = await DataSchema.find(query);
-      if (!resultList) {
-        return res.status(101).json({ errors: [{ msg: "Name not found" }] });
-      } else {
-        res.status(200).json({ resultList });
-      }
-    } catch (error) {
-      res.status(500).json({ errors: [{ msg: "Finding data is failed" }] });
+  const name = req.body.name;
+  try {
+    const query = {};
+    query[name] = { $regex: req.body.value };
+    const resultList = await StudentClass.find(query);
+    if (!resultList) {
+      return res.status(101).json({ errors: [{ msg: "Name not found" }] });
+    } else {
+      res.status(200).json({ resultList });
     }
-  };
+  } catch (error) {
+    res.status(500).json({ errors: [{ msg: "Finding data is failed" }] });
+  }
+};
 
 module.exports = {
-    updateData, deleteData, addNew, getOnebytId, getAll, findData
+  updateData,
+  deleteData,
+  addClassStudent,
+  getOnebytId,
+  getAll,
+  findData,
+  deleteallData,
+  addStudenttoClass,
+  getStudentOneClass,
 };

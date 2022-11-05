@@ -13,10 +13,6 @@ const ParStudRel = require("../SchemaModels/RelationSchema/Parent_Student_Schema
 
 const getAllParents = async (req, res) => {
   try {
-    // const resultList = await tokenSchema.find({ token: req.token });
-    // if (resultList.length < 1) {
-    //   res.status(401).json({ error: [{ message: "Invalid Token" }] });
-    // }
     const parents = await Parent.find().populate("student");
     if (parents.length === 0) {
       res.status(201).json({ errors: [{ msg: "your database is empty" }] });
@@ -33,10 +29,6 @@ const getAllParents = async (req, res) => {
 const getOneParentId = async (req, res) => {
   const id = req.params.id;
   try {
-    // const resultList = await tokenSchema.find({ token: req.token });
-    // if (resultList.length < 1) {
-    //   res.status(401).json({ error: [{ message: "Invalid Token" }] });
-    // }
     const searchedParent = await Parent.findOne({ _id: id });
     if (!searchedParent) {
       return res.status(101).json({ errors: [{ msg: "parent not found" }] });
@@ -53,10 +45,6 @@ const getOneParentId = async (req, res) => {
 const addParent = async (req, res) => {
   const parentInfo = req.body;
   try {
-    // const resultList = await tokenSchema.find({ token: req.token });
-    // if (resultList.length < 1) {
-    //   res.status(401).json({ error: [{ message: "Invalid Token" }] });
-    // }
     const hashedPasword = await bcrypt.hash(parentInfo.password, 10);
     const newObjectID = mongoose.Types.ObjectId();
     const newParent = new Parent({
@@ -105,11 +93,7 @@ const addParent = async (req, res) => {
 
 const deleteParents = async (req, res) => {
   try {
-    // const resultList = await tokenSchema.find({ token: req.token });
-    // if (resultList.length < 1) {
-    //   res.status(401).json({ error: [{ message: "Invalid Token" }] });
-    // }
-     await Parent.remove({});
+    await Parent.remove({});
     res.status(200).json({
       errors: [{ msg: "deleting all parents is succesfully done" }],
     });
@@ -125,10 +109,6 @@ const deleteParents = async (req, res) => {
 const deleteParent = async (req, res) => {
   const id = req.params.id;
   try {
-    // const resultList = await tokenSchema.find({ token: req.token });
-    // if (resultList.length < 1) {
-    //   res.status(401).json({ error: [{ message: "Invalid Token" }] });
-    // }
     await ParStudRel.deleteMany({
       parent_id: mongoose.Types.ObjectId(id),
     });
@@ -149,10 +129,6 @@ const updateParent = async (req, res) => {
   const id = req.params.id;
   const parentInfo = req.body;
   try {
-    // const resultList = await tokenSchema.find({ token: req.token });
-    // if (resultList.length < 1) {
-    //   res.status(401).json({ error: [{ message: "Invalid Token" }] });
-    // }
     const updatedParent = await Parent.findByIdAndUpdate(id, parentInfo, {
       new: true,
     });
@@ -171,10 +147,6 @@ const updateParent = async (req, res) => {
 
 const getMeeting = async (req, res) => {
   try {
-    // const resultList = await tokenSchema.find({ token: req.token });
-    // if (resultList.length < 1) {
-    //   res.status(401).json({ error: [{ message: "Invalid Token" }] });
-    // }
     const meetings = await meetingSchema.find({
       parent_id: req.body.parent_id,
     });

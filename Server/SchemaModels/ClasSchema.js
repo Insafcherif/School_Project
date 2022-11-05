@@ -10,6 +10,6 @@ const schema = mongoose.Schema({
   Year: {
     type: Number,
   },
- 
+  students: [{ type: mongoose.Types.ObjectId, ref: "student" }],
 });
-module.exports = mongoose.model("class", schema);
+module.exports = mongoose.model("clas", schema);

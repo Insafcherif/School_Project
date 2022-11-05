@@ -7,13 +7,15 @@ const {
   getOnebytId,
   getAll,
   findData,
-} = require("../../Controllers/datadaseControllers/classControllers");
+  deleteallData,
+} = require("../../Controllers/datadaseControllers/ClasControllers");
 
 router.get("/all", getAll);
 router.get("/:id", getOnebytId);
-router.post("/add", addNew);
+router.post("/:level/add", addNew);
 router.put("/:id", updateData);
 router.delete("/:id", deleteData);
+router.delete("/deleteall", deleteallData);
 router.post("/find", findData);
 
 module.exports = router;

@@ -2,7 +2,7 @@ const express = require("express");
 const app = express();
 
 const AccessLevelRouter = require("./AccessLevelRouters");
-const classRouter = require("./classRouter");
+const classRouter = require("./clasRouter");
 const clubRouter = require("./ClubRouter");
 const evalRouter = require("./evalRouter");
 const noteRouter = require("./noteRouter");
