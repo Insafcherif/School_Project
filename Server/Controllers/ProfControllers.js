@@ -10,10 +10,6 @@ const ProfSubject = require("../SchemaModels/RelationSchema/Prof_Subject_Schema"
 
 const getAllProfs = async (req, res) => {
   try {
-    // const resultList = await tokenSchema.find({ token: req.token });
-    // if (resultList.length < 1) {
-    //   res.status(401).json({ error: [{ message: "Invalid Token" }] });
-    // }
     const profs = await Prof.find();
     if (profs.length === 0) {
       res.status(201).json({ errors: [{ msg: "your database is empty" }] });
@@ -30,10 +26,6 @@ const getAllProfs = async (req, res) => {
 const getOneProfById = async (req, res) => {
   const id = req.params.id;
   try {
-    // const resultList = await tokenSchema.find({ token: req.token });
-    // if (resultList.length < 1) {
-    //   res.status(401).json({ error: [{ message: "Invalid Token" }] });
-    // }
     const searchedProf = await Prof.findOne({ _id: id });
     if (!searchedProf) {
       return res.status(101).json({ errors: [{ msg: "ID not found" }] });
@@ -52,10 +44,6 @@ const getOneProfById = async (req, res) => {
 const addProf = async (req, res) => {
   const profInfo = req.body;
   try {
-    // const resultList = await tokenSchema.find({ token: req.token });
-    // if (resultList.length < 1) {
-    //   res.status(401).json({ error: [{ message: "Invalid Token" }] });
-    // }
     const hashedPasword = await bcrypt.hash(profInfo.password, 10);
     const newObjectID = mongoose.Types.ObjectId();
     const newProf = new Prof({
@@ -111,10 +99,6 @@ const addProf = async (req, res) => {
 const deteleProf = async (req, res) => {
   const id = req.params.id;
   try {
-    // const resultList = await tokenSchema.find({ token: req.token });
-    // if (resultList.length < 1) {
-    //   res.status(401).json({ error: [{ message: "Invalid Token" }] });
-    // }
     await ProfSubject.deleteMany({
       professor_id: mongoose.Types.ObjectId(id),
     });
@@ -137,10 +121,6 @@ const updateProf = async (req, res) => {
   const id = req.params.id;
   const profInfo = req.body;
   try {
-    // const resultList = await tokenSchema.find({ token: req.token });
-    // if (resultList.length < 1) {
-    //   res.status(401).json({ error: [{ message: "Invalid Token" }] });
-    // }
     const updateProf = await Prof.findByIdAndUpdate(id, profInfo, {
       new: true,
     });
@@ -180,10 +160,6 @@ const findProf = async (req, res) => {
 const schedulMeeting = async (req, res) => {
   const neetingInfo = req.body;
   try {
-    // const resultList = await tokenSchema.find({ token: req.token });
-    // if (resultList.length < 1) {
-    //   res.status(401).json({ error: [{ message: "Invalid Token" }] });
-    // }
     const meetingModel = new meetingSchema({
       _id: mongoose.Types.ObjectId(),
       professor_id: req.professor_id,
