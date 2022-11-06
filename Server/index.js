@@ -12,6 +12,7 @@ const StudentRouter = require("./Routers/StudentRouter");
 const dataBaseRouter = require("./Routers/databaseRouters/dataBasesRouters");
 const classMRouter = require("./Routers/ClassManagementRouter");
 const relationRouter = require("./Routers/relationRouters/relationRouter");
+const homeWorkRouter = require("./Routers/HomeWorkRouter")
 const cors = require("cors");
 
 
@@ -35,5 +36,5 @@ app.use("/api/login", logInRouter);
 app.use("/api/student", StudentRouter);
 app.use("/api/database", dataBaseRouter);
 app.use("/api/classM", classMRouter);
-
+app.use("/api/HomeWork", homeWorkRouter);
 app.use("/api/relation", relationRouter);

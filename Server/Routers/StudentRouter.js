@@ -7,7 +7,7 @@ const {
   getOneStudentId,
   getAllStudents, deleteAllStudents
 } = require("../Controllers/StudentControllers");
-const { extractToken } = require("../Midelwars/extracToken");
+
 
 router.get("/allStudents",  getAllStudents);
 router.get("/:id",  getOneStudentId);

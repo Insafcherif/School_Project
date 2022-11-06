@@ -1,16 +1,11 @@
 const mongoose = require("mongoose");
 const attendanceSchema = require("../SchemaModels/attendanceSchema");
 const feeSchema = require("../SchemaModels/fessSchema");
-const tokenSchema = require("../SchemaModels/token_Schema");
 
 //Add attendance for a student
 
 const addAttendance = async (req, res) => {
   try {
-    const resultList = await tokenSchema.find({ token: req.token });
-    if (resultList.length < 1) {
-      res.status(401).json({ error: [{ message: "Invalid Token" }] });
-    }
     const attendanceModel = new attendanceSchema({
       _id: mongoose.Types.ObjectId(),
       student_id: req.body.student_id,
@@ -31,10 +26,6 @@ const addAttendance = async (req, res) => {
 
 const findAttdnce = async (req, res) => {
   try {
-    const resultList = await tokenSchema.find({ token: req.token });
-    if (resultList.length < 1) {
-      res.status(401).json({ error: [{ message: "Invalid Token" }] });
-    }
     const result = await attendanceSchema.find({
       student_id: req.body.student_id,
       date: req.body.date,
@@ -50,10 +41,6 @@ const findAttdnce = async (req, res) => {
 //Find absences of a student
 const findAbsence = async (req, res) => {
   try {
-    const resultList = await tokenSchema.find({ token: req.token });
-    if (resultList.length < 1) {
-      res.status(401).json({ error: [{ message: "Invalid Token" }] });
-    }
     const result = await attendanceSchema.find({ attended: false });
     res.status(200).json(result);
   } catch (error) {
@@ -64,10 +51,6 @@ const findAbsence = async (req, res) => {
 //Add fee for a student for a term
 const addFee = async (req, res) => {
   try {
-    const resultList = await tokenSchema.find({ token: req.token });
-    if (resultList.length < 1) {
-      res.status(401).json({ error: [{ message: "Invalid Token" }] });
-    }
     const feeModel = new feeSchema({
       _id: mongoose.Types.ObjectId(),
       student_id: req.body.student_id,
@@ -89,10 +72,6 @@ const addFee = async (req, res) => {
 
 const updateFee = async (res, req) => {
   try {
-    const resultList = await tokenSchema.find({ token: req.token });
-    if (resultList.length < 1) {
-      res.status(401).json({ error: [{ message: "Invalid Token" }] });
-    }
     const searchedfee = await feeSchema.find({
       student_id: req.body.student_id,
       term: req.body.term,

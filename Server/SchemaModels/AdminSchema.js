@@ -5,7 +5,6 @@ const schema = new AbstractBaseSchema({
   fonction: {
     type: String,
   },
-  date_of_birth: { type: String },
   joining_year: {
     type: Number,
   },

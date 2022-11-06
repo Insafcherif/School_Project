@@ -1,6 +1,8 @@
 const User = require("../SchemaModels/UserSchema");
 const bcrypt = require("bcryptjs");
 
+// Get all users
+
 const getAllUsers = async (req, res) => {
   try {
     const users = await User.find();
@@ -13,6 +15,8 @@ const getAllUsers = async (req, res) => {
     res.status(500).json({ errors: [{ msg: "get all users is failed" }] });
   }
 };
+
+// get One User 
 
 const getOneUser = async (req, res) => {
   const id = req.params.id;
@@ -27,6 +31,9 @@ const getOneUser = async (req, res) => {
     res.status(500).json({ errors: [{ msg: "getting one user is failed" }] });
   }
 };
+
+// Add user 
+
 const addUser = async (req, res) => {
   const userInfo = req.body;
   try {
@@ -58,6 +65,9 @@ const addUser = async (req, res) => {
     res.status(500).json({ errors: [{ msg: "add user is failed" }] });
   }
 };
+
+// delete user
+
 const deleteUser = async (req, res) => {
   const id = req.params.id;
   try {
@@ -70,6 +80,9 @@ const deleteUser = async (req, res) => {
     res.status(500).json({ errors: [{ msg: "delete user is failed" }] });
   }
 };
+
+// Update User
+
 const updateUser = async (req, res) => {
   const id = req.params.id;
   const userInfo = req.body;
